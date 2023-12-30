@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .main {
+      width: 100%;
+      height: 1000px;
+    }
+
+    #title {
+      color: blue;
+      font-family: Comic Sans MS;
+      font-size: 25px;
+      font-weight: bold;
+      font-variant-caps: normal;
+      background-color: grey;
+      border: 5px solid green;
+    }
+
+    #game {
+      width: 300px;
+      height: 500px;
+      padding-top: 50px;
+    }
+
+    #reset, #win, #lose {
+      margin: 20px;
+      padding: 10px;
+      font-size: 20px;
+      font-family: Tahoma;
+      border-radius: 20px;
+    }
+
+    th, td {
+      border: 5px solid black;
+      width: 50px;
+      height: 50px;
+      padding: 10px;
+      border-radius: 20px;
+      background-color: grey;
+      font-size: 20px;
+      font-family: Segoe UI;
+    }
+
+    .winner {
+      position: relative;
+    }
+
+    #Winner {
+      font-size: 30px;
+      font-family: Trebuchet MS;
+      font-weight: bold;
+      font-style: italic;
+      color: purple;
+    }
+  </style>
+  <script>
+    var board = [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
+    ];
+
+    var currentPlayer = 'X';
+
+    
+
+    function show() {
+      alert("element dragged...");
+    }
+
+    function clicked(row, col) {
+      if (board[row][col] === '' && document.getElementById("Winner").innerHTML === '') {
+        board[row][col] = currentPlayer;
+        checkWinner();
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        updateBoard();
+      }
+    }
+
+    function checkWinner() {
+      for (var i = 0; i < 3; i++) {
+        if (board[i][0] !== '' && board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+          document.getElementById("Winner").innerHTML = "Player " + board[i][0] + " Wins!";
+          return;
+        }
+        if (board[0][i] !== '' && board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
+          document.getElementById("Winner").innerHTML = "Player " + board[0][i] + " Wins!";
+          return;
+        }
+      }
+
+      if (board[0][0] !== '' && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+        document.getElementById("Winner").innerHTML = "Player " + board[0][0] + " Wins!";
+        return;
+      }
+
+      if (board[0][2] !== '' && board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+        document.getElementById("Winner").innerHTML = "Player " + board[0][2] + " Wins!";
+        return;
+      }
+
+      if (board.flat().every(cell => cell !== '')) {
+        document.getElementById("Winner").innerHTML = "It's a Draw!";
+      }
+    }
+
+    function updateBoard() {
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+          document.getElementById("b" + (i * 3 + j + 1)).innerHTML = board[i][j];
+        }
+      }
+    }
+
+    function reset() {
+      board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+      ];
+      currentPlayer = 'X';
+      document.getElementById("Winner").innerHTML = '';
+      updateBoard();
+    }
+
+    function win() {
+      // Add your win logic here
+      alert("You Win!");
+    }
+
+    function lose() {
+      // Add your lose logic here
+      alert("You Lose!");
+    }
+  </script>
+  <title>Tic Tac Toe</title>
+</head>
+<body onload="loaded()" align="center" id="body">
+  <div class="main" align="center">
+    <nav id="title">
+      Tic Tac Toe
+    </nav>
+
+    <div id="game" align="center">
+      <table id="game1">
+        <tr id="row1">
+          <th id="b1" onclick="clicked(0, 0);"></th>
+          <th id="b2" onclick="clicked(0, 1);"></th>
+          <th id="b3" onclick="clicked(0, 2);"></th>
+        </tr>
+        <tr id="row2">
+          <th id="b4" onclick="clicked(1, 0);"></th>
+          <th id="b5" onclick="clicked(1, 1);"></th>
+          <th id="b6" onclick="clicked(1, 2);"></th>
+        </tr>
+        <tr id="row3">
+          <th id="b7" onclick="clicked(2, 0);"></th>
+          <th id="b8" onclick="clicked(2, 1);"></th>
+          <th id="b9" onclick="clicked(2, 2);"></th>
+        </tr>
+      </table>
+      <input type="button" id="reset" onclick="reset();" value="Reset" />
+      <div class="winner" align="center" draggable="true" ondrag="show();">
+        <p id="Winner"></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
